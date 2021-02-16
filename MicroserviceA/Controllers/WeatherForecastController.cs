@@ -1,0 +1,64 @@
+﻿using MassTransit;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace MicroserviceA.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class WeatherForecastController : ControllerBase
+    {
+        private static readonly string[] Summaries = new[]
+        {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        private readonly ILogger<WeatherForecastController> _logger;
+
+        // MassTransit
+        private IPublishEndpoint _PublishMessage;
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IPublishEndpoint PublishMessage)
+        {
+            _logger = logger;
+            _PublishMessage = PublishMessage;
+        }
+
+        [HttpGet]
+        public IEnumerable<WeatherForecast> Get()
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
+
+        // Test Publish to Message Broker
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] WeatherForecast value)
+        {
+            // ...Process Data...
+
+            var DataNotification = new NotificationTest
+            {
+                Date = DateTime.Now,
+                NotifMessage = "Test Send message to RabbitMQ Server",
+                Status = "Valid"
+            };
+
+            //Send to rabbitmq server
+            await _PublishMessage.Publish<NotificationTest>(DataNotification);
+
+            return Ok();
+        }
+
+    }
+}
