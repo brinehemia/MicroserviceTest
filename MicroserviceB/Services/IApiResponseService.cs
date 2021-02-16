@@ -69,7 +69,7 @@ namespace MicroserviceB.Services
             var getUrl = _uriService.GetAllUri(url);
             var client = new RestClient(getUrl);
             var request = new RestRequest(Method.DELETE);
-            request.AddHeader("X-Api-Key", "5dacc24ac51bf183b7f1d1c6664ee3faaa960889");
+            request.AddHeader("X-Api-Key", "");
             request.AddHeader("Content-Type", "application/json");
             var response = await client.ExecuteAsync(request);
 

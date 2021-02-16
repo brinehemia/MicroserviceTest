@@ -24,6 +24,8 @@ namespace MicroserviceB.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            // Get Data from MicroserviceA
+
             var response =  _getResponseService.GetResponse("weatherforecast");
             //var data = ConvertResponseHelper.GetResponseData<>(response);
 

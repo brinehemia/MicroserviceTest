@@ -34,12 +34,11 @@ namespace MicroserviceB
             services.AddControllers();
             services.AddSingleton<IUriService>(provider =>
             {
-                var absoluteUri = "https://localhost:49183/";
+                var absoluteUri = "https://localhost:/44349";
                 return new UriService(absoluteUri);
             });
 
             services.AddMassTransit(config => {
-
                 // declare consumer/receiver
                 config.AddConsumer<RecieverMessageService>();
 
@@ -54,8 +53,6 @@ namespace MicroserviceB
             });
 
             services.AddMassTransitHostedService();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
