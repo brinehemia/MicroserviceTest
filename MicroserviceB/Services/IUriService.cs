@@ -10,7 +10,6 @@ namespace MicroserviceB.Services
     public interface IUriService
     {
         Uri GetAllUri(string query = null);
-        Uri TestInidan(string test, string tai);
     }
 
     public class UriService : IUriService
@@ -33,11 +32,6 @@ namespace MicroserviceB.Services
 
             var modifiedUri = _baseUri + "" + apiPath;
             return new Uri(modifiedUri);
-        }
-
-        public Uri TestInidan(string test, string tai)
-        {
-            return new Uri("sdfsdfsf");
         }
     }
 }
